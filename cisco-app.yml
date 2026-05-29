@@ -1,0 +1,114 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: cm-cisco
+data:
+  database: cisco
+  user: chris
+ 
+# oc create configmap cm-cisco --from-literal user=chris --from-literal database=cisco --dry-run=client -o yaml
+#
+---
+apiVersion: v1
+data:
+  password: bXlwYTU1
+  root_password: cjAwdHBhNTU=
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: secret-cisco
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cisco-app
+  labels:
+    app: cisco
+  # namespace: project1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      manager: chris
+  template:
+    metadata:
+      labels:
+        manager: chris
+    spec:
+      containers:
+        - name: web
+          image: registry.access.redhat.com/ubi9/httpd-24:9.7
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+
+        - name: db 
+          image: registry.fedoraproject.org/f32/mysql:latest
+          ports:   
+            - containerPort: 3306
+              protocol: TCP
+          env:     
+            - name: MYSQL_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: cm-cisco
+                  key: user
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: cm-cisco
+                  key: database
+                   
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret-cisco
+                  key: password
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret-cisco
+                  key: root_password
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: cisco
+  name: cisco-app
+spec:
+  ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    manager: chris
+status:
+  loadBalancer: {}
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  creationTimestamp: null
+  labels:
+    app: cisco
+  name: cisco-app
+spec:
+  port:
+    targetPort: http
+  to:
+    kind: ""
+    name: cisco-app
+    weight: null
+status: {}
+
+# oc create deployment myapp --image registry.access.redhat.com/ubi9/httpd-24:9.7 --replicas 4 --port 8080  --dry-run=client -o yaml
+# oc expose deployment cisco-app --dry-run=client -o yaml
+# oc expose deployment cisco-app --dry-run=client -o yaml

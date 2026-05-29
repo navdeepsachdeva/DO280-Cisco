@@ -1,0 +1,22 @@
+apiVersion: quota.openshift.io/v1
+kind: ClusterResourceQuota
+metadata:
+  creationTimestamp: null
+  name: clusterresourcequota-donald
+spec:
+  quota:
+    hard:
+      count/configmaps: "4"
+      count/deployments.apps: "2"
+      count/pods: "6"
+      count/routes.route.openshift.io: "2"
+      count/secrets: "6"
+      count/services: "2"
+  selector:
+    annotations:
+      openshift.io/requester: donald
+    labels: null
+status:
+  namespaces: null
+  total: {}
+# oc create clusterresourcequota clusterresourcequota-donald  --hard count/pods=6,count/services=2,count/secrets=6,count/configmaps=4,count/deployments.apps=2,count/routes.route.openshift.io=2 --project-annotation-selector openshift.io/requester=donald --dry-run=client -o yaml > clusterresourcequota-donald.yml

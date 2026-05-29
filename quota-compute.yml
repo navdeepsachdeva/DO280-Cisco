@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  creationTimestamp: null
+  name: quota-compute
+spec:
+  hard:
+    limits.cpu: 30m
+    limits.memory: 40Mi
+    requests.cpu: 10m
+    requests.memory: 20Mi
+status: {}
+# oc create quota quota-compute --hard requests.cpu=10m,requests.memory=20Mi,limits.cpu=30m,limits.memory=40Mi --dry-run=client -o yaml > quota-compute.yml

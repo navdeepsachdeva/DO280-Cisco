@@ -1,0 +1,16 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  creationTimestamp: null
+  labels:
+    app: cisco
+  name: cisco-app
+spec:
+  port:
+    targetPort: http
+  to:
+    kind: ""
+    name: cisco-app
+    weight: null
+status: {}

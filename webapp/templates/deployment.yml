@@ -1,0 +1,31 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cisco-app
+  labels:
+    app: cisco
+  # namespace: project1
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      manager: chris
+  template:
+    metadata:
+      labels:
+        manager: chris
+    spec:
+      containers:
+        - name: web
+          image: {{ .Values.web_image.repository }}:{{ .Values.web_image.tag }}
+          ports:
+            - containerPort: {{ .Values.web_image.port }}
+              protocol: TCP
+          resources:
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}

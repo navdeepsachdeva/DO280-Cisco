@@ -1,0 +1,8 @@
+apiVersion: v2
+name: webapp
+description: A Helm chart For Cisco Class
+
+type: application
+
+version: 0.1.0
+appVersion: "1.2.0"

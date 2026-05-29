@@ -1,0 +1,53 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-app
+  labels:
+    app: cisco
+  # namespace: project1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      manager: chris
+  template:
+    metadata:
+      labels:
+        manager: chris
+    spec:
+      containers:
+        - name: db 
+          image: registry.fedoraproject.org/f32/mysql:latest
+          ports:   
+            - containerPort: 3306
+              protocol: TCP
+          env:     
+            - name: MYSQL_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: cm-cisco
+                  key: user
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: cm-cisco
+                  key: database
+                   
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret-cisco
+                  key: password
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret-cisco
+                  key: root_password
+          resources:
+            requests:
+              cpu: 20m
+              memory: 100M
+            limits:
+              cpu: 100m
+              memory: 500M

@@ -1,0 +1,7 @@
+---
+kind: Deployment
+metadata:
+  name: cisco-app
+spec:
+  replicas: 4
+

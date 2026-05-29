@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:      
+  name: db-app
+spec:          
+  replicas: 2
+  template:
+    spec:
+      containers:
+        - name: web
+          resources:
+            requests:
+              cpu: 20m
+              memory: 40M
+            limits:
+              cpu: 25m
+              memory: 45M
+

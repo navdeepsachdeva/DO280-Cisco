@@ -1,0 +1,31 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cisco-app
+  labels:
+    app: cisco
+  # namespace: project1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      manager: chris
+  template:
+    metadata:
+      labels:
+        manager: chris
+    spec:
+      containers:
+        - name: web
+          image: registry.access.redhat.com/ubi9/httpd-24:9.7
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 10m
+              memory: 20M
+            limits:
+              cpu: 15m
+              memory: 25M

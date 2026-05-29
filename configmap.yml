@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: cm-cisco
+data:
+  database: cisco
+  user: chris
+
+# oc create configmap cm-cisco --from-literal user=chris --from-literal database=cisco --dry-run=client -o yaml

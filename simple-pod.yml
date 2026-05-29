@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: alex-pod
+  labels:
+    you: me
+spec:
+  containers:
+    - name: web
+      image: registry.access.redhat.com/ubi9/httpd-24:9.7
+      ports:
+        - containerPort: 8080
+          protocol: TCP
+        - containerPort: 8443
+          # protocol: TCP
+
+# status:

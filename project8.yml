@@ -1,0 +1,25 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  creationTimestamp: null
+  name: project8
+  labels:
+    k8s.ovn.org/primary-user-defined-network: "primary-udn"
+spec: {}
+status: {}
+ 
+---
+apiVersion: k8s.ovn.org/v1
+kind: UserDefinedNetwork
+metadata:
+  name: primary-udn
+  namespace: project8
+spec:
+  layer2:
+    ipam:
+      lifecycle: Persistent
+    role: Primary
+    subnets:
+    - 21.0.0.0/16
+  topology: Layer2
