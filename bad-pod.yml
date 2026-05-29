@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-pod
+  labels:
+    you: me
+spec:
+  serviceAccountName: zeeshan
+  containers:
+    - name: web
+      image: docker.io/library/httpd
+      ports:
+        - containerPort: 80

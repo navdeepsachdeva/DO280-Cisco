@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  creationTimestamp: null
+  labels:
+    app: daemon-app
+  name: daemon-app
+spec:
+  selector:
+    matchLabels:
+      app: myapp
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: myapp
+    spec:
+      containers:
+      - image: registry.access.redhat.com/ubi9/httpd-24:9.7
+        name: httpd-24
+        ports:
+        - containerPort: 8080
+        - containerPort: 8443
+        resources: {}
+status: {}
+
+# oc create deployment myapp --image registry.access.redhat.com/ubi9/httpd-24:9.7 --replicas 4 --port 8080  --dry-run=client -o yaml > myapp.yml

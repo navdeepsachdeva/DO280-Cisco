@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  creationTimestamp: null
+  name: onetime
+spec:
+  template:
+    metadata:
+      creationTimestamp: null
+    spec:
+      containers:
+      - command:
+        - head
+        - -n4
+        - /etc/passwd
+        image: registry.access.redhat.com/ubi9/ubi:latest
+        name: onetime
+        resources: {}
+      restartPolicy: Never
+status: {}
+
+# oc create job onetime --image registry.access.redhat.com/ubi9/ubi:latest --dry-run=client -o yaml -- head -n4 /etc/passwd > onetime.yml
